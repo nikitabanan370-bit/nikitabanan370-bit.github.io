@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FEK | Доксер & Дизайнер</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+            color: #fff;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Частицы */
+        #particles-js {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+        }
+
+        /* Стеклянный фон с блюром */
+        .glass-container {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            padding: 30px;
+            margin: 20px auto;
+            max-width: 800px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .glass-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, #fff, transparent);
+        }
+
+        /* Неоновый градиентный текст */
+        .neon-text {
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4, #45b7d1, #a8e6cf);
+            background-size: 400% 400%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: gradientShift 3s ease infinite;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+        }
+
+        @keyframes gradientShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        /* Анимированные кнопки */
+        .neon-button {
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+            border: none;
+            padding: 12px 25px;
+            border-radius: 25px;
+            color: white;
+            font-weight: bold;
+            text-decoration: none;
+            display: inline-block;
+            margin: 5px;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 15px rgba(255, 107, 107, 0.3);
+        }
+
+        .neon-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: 0.5s;
+        }
+
+        .neon-button:hover::before {
+            left: 100%;
+        }
+
+        .neon-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 20px rgba(255, 107, 107, 0.5);
+        }
+
+        .neon-button:active {
+            transform: translateY(-1px);
+            box-shadow: 0 2px 10px rgba(255, 107, 107, 0.5);
+        }
+
+        /* Аватар */
+        .avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            margin: 0 auto 20px;
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4, #45b7d1);
+            background-size: 400% 400%;
+            animation: gradientShift 3s ease infinite;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 0 20px rgba(255, 107, 107, 0.3);
+        }
+
+        /* Био информация */
+        .bio-item {
+            display: flex;
+            align-items: center;
+            margin: 15px 0;
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            border-left: 3px solid #4ecdc4;
+        }
+
+        .bio-label {
+            font-weight: bold;
+            margin-right: 10px;
+            min-width: 80px;
+            color: #4ecdc4;
+        }
+
+        /* Ссылки на Telegram */
+        .tg-link {
+            color: #0088cc;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            font-weight: bold;
+        }
+
+        .tg-link:hover {
+            color: #00cc88;
+            text-shadow: 0 0 10px rgba(0, 136, 204, 0.5);
+        }
+
+        /* Анимации появления */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .fade-in {
+            animation: fadeInUp 0.6s ease-out;
+        }
+
+        /* Контейнер */
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Заголовки секций */
+        .section-title {
+            font-size: 1.8rem;
+            margin-bottom: 25px;
+            text-align: center;
+        }
+
+        /* Друзья */
+        .friends-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+            margin: 15px 0;
+        }
+
+        .friend-tag {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 8px 15px;
+            border-radius: 15px;
+            font-size: 0.9rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        /* Футер */
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+            padding: 20px;
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 0.9rem;
+        }
+
+        /* Адаптивность */
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+            
+            .glass-container {
+                margin: 10px;
+                padding: 20px;
+            }
+            
+            .avatar {
+                width: 100px;
+                height: 100px;
+                font-size: 2rem;
+            }
+            
+            .bio-item {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .bio-label {
+                margin-bottom: 5px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Частицы -->
+    <div id="particles-js"></div>
+
+    <div class="container">
+        <!-- Профиль -->
+        <section class="glass-container fade-in">
+            <div class="avatar">👨‍💻</div>
+            <h1 class="section-title neon-text">FEK</h1>
+            
+            <div class="bio-item">
+                <span class="bio-label">Name</span>
+                <span>Kolya</span>
+            </div>
+            
+            <div class="bio-item">
+                <span class="bio-label">Number</span>
+                <span>+7*********</span>
+            </div>
+            
+            <div class="bio-item">
+                <span class="bio-label">Lika</span>
+                <span>FEKRIK (Fek)</span>
+            </div>
+            
+            <div class="bio-item">
+                <span class="bio-label">City</span>
+                <span>Good</span>
+            </div>
+            
+            <div class="bio-item">
+                <span class="bio-label">Twink</span>
+                <span>secret</span>
+            </div>
+            
+            <div class="bio-item">
+                <span class="bio-label">Friends</span>
+                <div class="friends-grid">
+                    <a href="https://t.me/belye_gybi" class="tg-link" target="_blank">@belye_gybi</a>
+                    <a href="https://t.me/Sports_555" class="tg-link" target="_blank">@Sports_555</a>
+                    <a href="https://t.me/boom4_5Tropic_el1tik" class="tg-link" target="_blank">@boom4_5Tropic_el1tik</a>
+                    <a href="https://t.me/valentaine_zh" class="tg-link" target="_blank">Вᴀᴧᴇнᴛᴀйн #Zh</a>
+                    <a href="https://t.me/sv4ga_drill" class="tg-link" target="_blank">@sv4ga_drill</a>
+                </div>
+            </div>
+
+            <div style="text-align: center; margin: 25px 0;">
+                <a href="https://t.me/+Wu9oLfRVAFNkNjli" class="neon-button" target="_blank">Life</a>
+                <a href="https://t.me/+2W6V7GtPJoxlMTFi" class="neon-button" target="_blank">Reviews</a>
+                <a href="https://t.me/+ZxAUo-gDoJxmYzJi" class="neon-button" target="_blank">Targets</a>
+            </div>
+
+            <div class="bio-item">
+                <span class="bio-label">Playlist</span>
+                <span>Soon.......</span>
+            </div>
+
+            <div style="margin-top: 25px; text-align: center; font-style: italic; color: rgba(255, 255, 255, 0.8); line-height: 1.6;">
+                <p>Do you want to do a doc? Okay, go ahead, I don't care.</p>
+                <p>Do you hate me? Okay, I don't care.</p>
+                <p>Are you making up rumors about me? Okay, I don't care.</p>
+                <p style="margin-top: 15px; color: #4ecdc4;">Ставь реакцию если был здесь</p>
+            </div>
+        </section>
+
+        <!-- Каста и обучение -->
+        <section class="glass-container fade-in">
+            <h2 class="section-title neon-text">Обо мне</h2>
+            <div style="text-align: center; line-height: 1.8;">
+                <p style="margin-bottom: 15px; font-size: 1.2rem;">
+                    <strong>Каста:</strong> Доксер, Дизайнер
+                </p>
+                <p style="margin-bottom: 15px; font-size: 1.1rem;">
+                    Но, иногда я продаю свою приватку<br>
+                    По цене обращаться: 
+                    <a href="https://t.me/fuckfekrik" class="tg-link" target="_blank">@fuckfekrik</a>
+                </p>
+                <p style="font-size: 1.1rem; color: #4ecdc4;">
+                    Обучаюсь программированию 💻
+                </p>
+            </div>
+        </section>
+
+        <!-- Канал -->
+        <section class="glass-container fade-in">
+            <h2 class="section-title neon-text">Мой канал</h2>
+            <div style="text-align: center;">
+                <p style="margin-bottom: 20px; font-size: 1.1rem;">
+                    Ты долго искал мой канал?
+                </p>
+                <a href="https://t.me/IamFekriktg27913" class="neon-button" target="_blank">
+                    📢 Перейти в мой канал
+                </a>
+            </div>
+        </section>
+
+        <!-- Контакты -->
+        <section class="glass-container fade-in">
+            <h2 class="section-title neon-text">Напиши мне</h2>
+            <div style="text-align: center;">
+                <p style="margin-bottom: 20px; font-size: 1.1rem;">
+                    Если я тебе понравился то пиши
+                </p>
+                <p style="margin-bottom: 20px; font-size: 1.2rem;">
+                    Мой юз: <a href="https://t.me/fuckfekrik" class="tg-link" target="_blank">@fuckfekrik</a>
+                </p>
+                <p style="font-size: 1.3rem; color: #4ecdc4; font-weight: bold;">
+                    Ник: FEK
+                </p>
+            </div>
+        </section>
+
+        <div class="footer">
+            &copy; 2024 FEK. Все права защищены.
+        </div>
+    </div>
+
+    <!-- Скрипт частиц -->
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <script>
+        // Инициализация частиц
+        particlesJS('particles-js', {
+            particles: {
+                number: { value: 80, density: { enable: true, value_area: 800 } },
+                color: { value: "#ffffff" },
+                shape: { type: "circle" },
+                opacity: { value: 0.5, random: true },
+                size: { value: 3, random: true },
+                line_linked: {
+                    enable: true,
+                    distance: 150,
+                    color: "#ffffff",
+                    opacity: 0.2,
+                    width: 1
+                },
+                move: {
+                    enable: true,
+                    speed: 2,
+                    direction: "none",
+                    random: true,
+                    straight: false,
+                    out_mode: "out",
+                    bounce: false
+                }
+            },
+            interactivity: {
+                detect_on: "canvas",
+                events: {
+                    onhover: { enable: true, mode: "repulse" },
+                    onclick: { enable: true, mode: "push" },
+                    resize: true
+                }
+            }
+        });
+
+        // Анимация появления
+        document.addEventListener('DOMContentLoaded', function() {
+            const elements = document.querySelectorAll('.fade-in');
+            elements.forEach((element, index) => {
+                element.style.animationDelay = `${index * 0.2}s`;
+            });
+        });
+
+        // Плавное появление при скролле
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        });
+
+        document.querySelectorAll('.glass-container').forEach((el) => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(30px)';
+            el.style.transition = 'all 0.6s ease-out';
+            observer.observe(el);
+        });
+    </script>
+</body>
+</html>
